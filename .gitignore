@@ -1,0 +1,15 @@
+# Build and Release Folders
+bin-debug/
+bin-release/
+lib/
+
+# Project property files
+.actionScriptProperties
+.flexProperties
+.settings/
+.project
+.DS_Store
+
+# Testing app files
+src/Main.as
+src/Main-app.xml
