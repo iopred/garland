@@ -1,12 +1,13 @@
-
 Getting Started
 ---------------
 
 It is extremely easy to load a SWF and play an animation..
 
-```var garland:Garland = new Garland();
+```
+var garland:Garland = new Garland();
 garland.addItem(new GarlandItem("character.swf");
-garland.animation = "Idle";```
+garland.animation = "Idle";
+```
 
 The loaded SWF file should contain an exported MovieClip named `_Idle`. Inside this MovieClip should be an animation similar to any other MovieClip created in Flash, it can (and should) contain Tweens but also supports color transforms and filters.
 The defining characteristic of an animation is that any MovieClip inside the animation that is exported for runtime can be layered by Garland.
@@ -15,13 +16,17 @@ Any MovieClips that are not exported for runtime will not be visible.
 Let's assume that the `_Idle` animation in the previous SWF contained an exported MovieClip name `Head`.
 If you were now to create a new SWF containing only an exported MovieClip named `Head`, you could layer this on top of your characteranimation simply by adding:
 
-```garland.addItem(new GarlandItem("hat.swf"));```
+```
+garland.addItem(new GarlandItem("hat.swf"));
+```
 
 Now, if you were to create a new SWF file with an exported animation `_Jump`, you could load that animation on to your Garland like any other item. This new animation could contain a new exported MovieClips for new effects (dust clouds or shadows).
 Now you would be able to play this animation with all the layered parts previously added.
 
-```garland.addItem(new GarlandItem("jump.swf"));
-garland.animation = "Jump";```
+```
+garland.addItem(new GarlandItem("jump.swf"));
+garland.animation = "Jump";
+```
 
 Garland supports a host of additional features.
 
@@ -29,49 +34,63 @@ Garland supports a host of additional features.
   Play an animation and automatically change to another when it finishes.
   The last animation in the queue will loop indefinately.
 
-  ```garland.animations = ["Jump", "Idle"];```
+  ```
+  garland.animations = ["Jump", "Idle"];
+  ```
 
   or
 
-  ```garland.animation = "Jump";
-  garland.queue = ["Idle"];```
+  ```
+  garland.animation = "Jump";
+  garland.queue = ["Idle"];
+  ```
 
 - Per part transformations.
   Support big head mode with a few simple lines of code:
 
-  ```var matrix:Matrix = new Matrix();
+  ```
+  var matrix:Matrix = new Matrix();
   matrix.scale(2, 2);
-  garland.addTransform("Head", matrix);```
+  garland.addTransform("Head", matrix);
+  ```
 
 - Colorised items with GarlandLayer.
   Export any number of part MovieClips with children named `color<n>`.
   You can then colorise these children with a GarlandLayer.
 
-  ```garland.addItem(new GarlandLayer("hat.swf", [0xCC0000]));```
+  ```
+  garland.addItem(new GarlandLayer("hat.swf", [0xCC0000]));
+  ```
 
 - Per item transformations.
   Apply a global transformation on each part of a item:
 
-  ```var matrix:Matrix = new Matrix();
+  ```
+  var matrix:Matrix = new Matrix();
   matrix.scale(2, 2);
-  garland.addItem(new GarlandLayer("character.swf", null, matrix);```
+  garland.addItem(new GarlandLayer("character.swf", null, matrix);
+  ```
 
   Apply transformations to a specific part inside a specific item:
 
-  ```var matrix:Matrix = new Matrix();
+  ```
+  var matrix:Matrix = new Matrix();
   matrix.scale(2, 2);
   var layer:GarlandLayer new GarlandLayer("hat.swf", null, matrix);
   layer.addTransform("Head", matrix)
-  garland.addItem(layer);```
+  garland.addItem(layer);
+  ```
 
 - Nested Garlands
   Create your animations with other `_MovieClips` and Garland will automatically nest Garlands. This allows you to make simple character animations, but customise facial features or even trigger custom animations while another is playing!
 
-  ```garland.animation = "Jump";
+  ```
+  garland.animation = "Jump";
   var head:Garland = garland.getChildByName("Head") as Garland;
   if (head) {
-    head.animations = ["HeadWink", "Head"];
-  }```
+      head.animations = ["HeadWink", "Head"];
+  }
+  ```
 
 - Bitmap Caching
   Set cacheAsBitmap like any other DisplayObject and Garland will cache the individual parts instead of the entire DisplayObject.
