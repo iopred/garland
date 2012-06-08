@@ -3,7 +3,7 @@ Garland
 
 A layered animation library.
 
-Garland provides a simple way to load animations from multiple swfs and to display them with layered graphics.
+Garland is a small library that allows illustrators to do what they do best, make animations and graphics, it provides a simple way to load animations from multiple swfs and to display them with layered graphics.
 
 Features
 --------

@@ -19,6 +19,7 @@
   </license-agreement>
 
   <files>
+    <file source="Set Part Linkage Names.jsfl" destination="$flash/commands/Garland" />
     <file source="Set Color Instance Names.jsfl" destination="$flash/commands/Garland" />
     <file source="Export Without Graphics.jsfl" destination="$flash/commands/Garland" />
   </files>
