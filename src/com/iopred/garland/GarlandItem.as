@@ -78,7 +78,7 @@ package com.iopred.garland {
 
     /**
      * Fired when loading fails in any way.
-     * @dispatches EVent.CANCEL.
+     * @dispatches Event.CANCEL.
      */
     private function onError(event:Event):void {
       dispatchEvent(new Event(Event.CANCEL));
@@ -98,6 +98,14 @@ package com.iopred.garland {
         }
       }
       return null;
+    }
+
+    /**
+     * Has this item loaded its assets.
+     * @returns true if the item has finished loading.
+     */
+    public function get loaded():Boolean {
+      return Boolean(domain);
     }
   }
 }

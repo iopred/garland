@@ -162,5 +162,9 @@ package com.iopred.garland {
     public function willTrigger(type:String):Boolean {
       return item.willTrigger(type);
     }
+
+    public function get loaded():Boolean {
+      return item.loaded;
+    }
   }
 }

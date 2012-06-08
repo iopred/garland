@@ -22,16 +22,46 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  */
-package com.iopred.garland {
-  import flash.display.DisplayObject;
-  import flash.events.IEventDispatcher;
-  import flash.geom.Matrix;
 
-  /**
-   * An interface for all items that can return a DisplayObject from a name.
-   */
-  public interface IGarland extends IEventDispatcher {
-    function getPart(name:String):DisplayObject;
-    function get loaded():Boolean;
+var types = {};
+
+function setGuides(hide, timeline, index) {
+  for (var l = 0; l < timeline.layers.length; l++) {
+    var layer = timeline.layers[l];
+    if (hide) {
+      types[i + "_" + l] = layer.layerType;
+      layer.layerType = "guide";
+    } else {
+      layer.layerType = types[i + "_" + l];
+    }
   }
 }
+
+var doc = fl.getDocumentDOM();
+var library = doc.library;
+var i;
+var item;
+for (i = 0; i < library.items.length; i++) {
+  item = library.items[i];
+  // Make sure the item isn't an animation.
+  if (item.name.indexOf("_") != 0 && item.name.indexOf("/_") == -1 &&
+      item.itemType == "movie clip") {
+    setGuides(true, item.timeline, i);
+  }
+}
+
+doc.publish();
+
+for (i = 0; i < library.items.length; i++) {
+  item = library.items[i];
+  // Make sure the item isn't an animation.
+  if (item.name.indexOf("_") != 0 && item.name.indexOf("/_") == -1 &&
+      item.itemType == "movie clip") {
+    setGuides(false, item.timeline, i);
+    // Animations will play up if we don't go into the items once we've reset
+    // their layer types.
+    library.editItem(item.name);
+  }
+}
+
+doc.exitEditMode();

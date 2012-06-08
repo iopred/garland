@@ -22,16 +22,34 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  */
-package com.iopred.garland {
-  import flash.display.DisplayObject;
-  import flash.events.IEventDispatcher;
-  import flash.geom.Matrix;
 
-  /**
-   * An interface for all items that can return a DisplayObject from a name.
-   */
-  public interface IGarland extends IEventDispatcher {
-    function getPart(name:String):DisplayObject;
-    function get loaded():Boolean;
+var regex = /color[0-9].?\b/i;
+
+function setColorNames(timeline) {
+  for (var l = 0; l < timeline.layers.length; l++) {
+    var layer = timeline.layers[l];
+    for (var f = 0; f < layer.frames.length; f++) {
+      var frame = layer.frames[f];
+      for (var e = 0; e < frame.elements.length; e++) {
+        var element = frame.elements[e];
+        if (element.libraryItem) {
+          var name = regex.exec(element.libraryItem.name);
+          if (name) {
+            element.name = name.toString().toLowerCase();
+          }
+        }
+      }
+    }
+  }
+}
+
+var doc = fl.getDocumentDOM();
+var library = doc.library;
+for (var i = 0; i < library.items.length; i++) {
+  var item = library.items[i];
+  // Make sure the item isn't an animation.
+  if (item.name.indexOf("_") != 0 && item.name.indexOf("/_") == -1 &&
+      item.itemType == "movie clip") {
+    setColorNames(item.timeline);
   }
 }

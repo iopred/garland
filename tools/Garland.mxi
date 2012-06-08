@@ -1,0 +1,26 @@
+<macromedia-extension type="command" version="1.0.0" name="Garland">
+
+  <author name="Chris Rhodes"/>
+
+  <products>
+    <product name="Flash" version="9" primary="true" />
+  </products>
+
+  <description>
+    <![CDATA[Tools for creating Garland animation rigs and items.]]>
+  </description>
+
+  <ui-access>
+    <![CDATA[Commands > Garland]]>
+  </ui-access>
+
+  <license-agreement>
+    <![CDATA[THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.]]>
+  </license-agreement>
+
+  <files>
+    <file source="Set Color Instance Names.jsfl" destination="$flash/commands/Garland" />
+    <file source="Export Without Graphics.jsfl" destination="$flash/commands/Garland" />
+  </files>
+
+</macromedia-extension>

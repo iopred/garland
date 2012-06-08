@@ -88,6 +88,9 @@ package com.iopred.garland {
      */
     private function onComplete(event:Event):void {
       refresh();
+      if (loaded) {
+        dispatchEvent(new Event(Event.COMPLETE));
+      }
     }
 
     /**
@@ -95,6 +98,9 @@ package com.iopred.garland {
      */
     private function onCancel(event:Event):void {
       removeItem(IGarland(event.target));
+      if (loaded) {
+        dispatchEvent(new Event(Event.COMPLETE));
+      }
     }
 
     /**
@@ -203,7 +209,6 @@ package com.iopred.garland {
       items.splice(index, 0, item);
       item.addEventListener(Event.COMPLETE, onComplete, false, 0, true);
       item.addEventListener(Event.CANCEL, onCancel, false, 0, true);
-      trace(items);
       refresh();
     }
 
@@ -443,6 +448,20 @@ package com.iopred.garland {
         cacheAsBitmapValue = value;
         clear();
       }
+    }
+
+
+    /**
+     * Have we loaded all our assets.
+     * @returns true if all of the items added have completed loading.
+     */
+    public function get loaded():Boolean {
+      for (var i:int = 0, l:int = items.length; i < l; i++) {
+        if (!items[i].loaded) {
+          return false;
+        }
+      }
+      return true;
     }
 
     /**
