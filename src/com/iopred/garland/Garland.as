@@ -48,6 +48,7 @@ package com.iopred.garland {
     public static var END:String = "garlandEnd";
     public static var START:String = "garlandStart";
 
+    private var activeParts:Object = {};
     private var addedLastFrame:Array = [];
     private var cacheAsBitmapValue:Boolean;
     private var looped:Boolean;
@@ -114,6 +115,7 @@ package com.iopred.garland {
         removeChildAt(0);
       }
       parts = {};
+      activeParts = {};
     }
 
     protected function recursivelyGotoAndPlay(container:DisplayObjectContainer,
@@ -203,12 +205,10 @@ package com.iopred.garland {
         }
         var name:String = Object(child).constructor.toString();
         name = name.substring(7, name.length - 1);
-        // TODO: Make parts always exist again. We must recreate them every time
-        // they are removed from the rig so that all contained animations are
-        // refreshed.
         var part:DisplayObject = parts[name];
         if (!part) {
           part = getPart(name);
+          parts[name] = part;
         }
         part.transform = child.transform;
         // We can't wrap an IGarland in a Sprite like we do for the other parts,
@@ -222,20 +222,21 @@ package com.iopred.garland {
         part.transform.matrix3D = null;
         part.filters = child.filters;
         currentParts[name] = part;
-        if (parts[name]) {
-          delete parts[name];
+        if (activeParts[name]) {
+          delete activeParts[name];
         } else {
           addChild(part);
+          recursivelyGotoAndPlay(DisplayObjectContainer(part), 1);
           if (!(part is Garland)) {
             addedLastFrame.push(part);
           }
         }
       }
       // Remove any unused parts from last frame.
-      for each(var displayObject:DisplayObject in parts) {
+      for each(var displayObject:DisplayObject in activeParts) {
         removeChild(displayObject);
       }
-      parts = currentParts;
+      activeParts = currentParts;
       dispatchEvent(new Event(Event.CHANGE));
       // We need to kickstart our own rig, just like we do the parts.
       if (currentFrame == 1) {
