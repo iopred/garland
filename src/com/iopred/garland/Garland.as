@@ -48,7 +48,8 @@ package com.iopred.garland {
     public static var START:String = "garlandStart";
 
     private var activeParts:Object = {};
-    private var cacheAsBitmapValue:Boolean = false;
+    private var cacheAsBitmapValue:Boolean;
+    private var looped:Boolean;
     private var parts:Object = {};
     private var playing:Boolean = true;
     private var rig:MovieClip = new MovieClip();
@@ -148,6 +149,8 @@ package com.iopred.garland {
       // If we've hit the end of this animation, let everyone know, and go to
       // the next if we have one queued.
       if (currentFrame == totalFrames) {
+        looped = true;
+      } else if (currentFrame == 1 && looped) {
         dispatchEvent(new Event(END));
         animations = animationQueue;
       }
@@ -417,6 +420,7 @@ package com.iopred.garland {
       // Set the name even if we're using a blank movieclip, so we can support
       // refreshing the animation before rigs have loaded.
       rig.name = value;
+      looped = false;
       dispatchEvent(new Event(START));
     }
 
@@ -428,6 +432,8 @@ package com.iopred.garland {
       if (value.length) {
         animation = value.shift();
         animationQueue = value;
+      } else {
+        animation = animation;
       }
     }
 
