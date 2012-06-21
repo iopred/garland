@@ -45,9 +45,9 @@ package com.iopred.garland {
   public class Garland extends Sprite implements IGarland {
     private static const GARLAND:String = "_";
 
-    public static var ERROR:String = "garlandError";
     public static var COMPLETE:String = "garlandComplete";
     public static var END:String = "garlandEnd";
+    public static var ERROR:String = "garlandError";
     public static var START:String = "garlandStart";
 
     private var activeParts:Object = {};
