@@ -45,6 +45,8 @@ package com.iopred.garland {
   public class Garland extends Sprite implements IGarland {
     private static const GARLAND:String = "_";
 
+    public static var ERROR:String = "garlandError";
+    public static var COMPLETE:String = "garlandComplete";
     public static var END:String = "garlandEnd";
     public static var START:String = "garlandStart";
 
@@ -92,17 +94,19 @@ package com.iopred.garland {
     private function onComplete(event:Event):void {
       refresh();
       if (loaded) {
-        dispatchEvent(new Event(Event.COMPLETE));
+        dispatchEvent(new Event(COMPLETE));
       }
     }
 
     /**
      * Fired whenever an item fails to load, removes the item from the rig.
      */
-    private function onCancel(event:Event):void {
+    private function onError(event:Event):void {
+      // Redispatch the error.
+      dispatchEvent(event);
       removeItem(IGarland(event.target));
       if (loaded) {
-        dispatchEvent(new Event(Event.COMPLETE));
+        dispatchEvent(new Event(COMPLETE));
       }
     }
 
@@ -172,7 +176,6 @@ package com.iopred.garland {
       // If we've hit the end of this animation, let everyone know, and go to
       // the next if we have one queued.
       if (currentFrame == 1 && (looped || totalFrames == 1)) {
-        dispatchEvent(new Event(END));
         // Start the next animation, or in the case of a loop, reget the current
         // rig, we must do this so that MovieClips that shouldn't exist in
         // the next frame are correctly removed.
@@ -181,6 +184,7 @@ package com.iopred.garland {
         } else {
           animation = animation;
         }
+        dispatchEvent(new Event(END));
         looped = false;
       } else if (currentFrame == totalFrames) {
         looped = true;
@@ -237,7 +241,6 @@ package com.iopred.garland {
         removeChild(displayObject);
       }
       activeParts = currentParts;
-      dispatchEvent(new Event(Event.CHANGE));
       // We need to kickstart our own rig, just like we do the parts.
       if (currentFrame == 1) {
         if (playing) {
@@ -262,8 +265,8 @@ package com.iopred.garland {
     public function addItemAt(item:IGarland, index:int):void {
       index = Math.max(0, Math.min(items.length, index));
       items.splice(index, 0, item);
-      item.addEventListener(Event.COMPLETE, onComplete, false, 0, true);
-      item.addEventListener(Event.CANCEL, onCancel, false, 0, true);
+      item.addEventListener(COMPLETE, onComplete, false, 0, true);
+      item.addEventListener(ERROR, onError, false, 0, true);
       refresh();
     }
 

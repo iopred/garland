@@ -73,7 +73,7 @@ package com.iopred.garland {
      */
     private function onComplete(event:Event):void {
       domain = event.target.applicationDomain;
-      dispatchEvent(new Event(Event.COMPLETE));
+      dispatchEvent(new Event(Garland.COMPLETE));
     }
 
     /**
@@ -81,7 +81,7 @@ package com.iopred.garland {
      * @dispatches Event.CANCEL.
      */
     private function onError(event:Event):void {
-      dispatchEvent(new Event(Event.CANCEL));
+      dispatchEvent(new Event(Garland.ERROR));
     }
 
     /**
