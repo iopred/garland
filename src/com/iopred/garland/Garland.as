@@ -26,6 +26,7 @@ package com.iopred.garland {
   import flash.display.Bitmap;
   import flash.display.BitmapData;
   import flash.display.DisplayObject;
+  import flash.display.DisplayObjectContainer;
   import flash.display.MovieClip;
   import flash.display.PixelSnapping;
   import flash.display.Shape;
@@ -47,7 +48,7 @@ package com.iopred.garland {
     public static var END:String = "garlandEnd";
     public static var START:String = "garlandStart";
 
-    private var activeParts:Object = {};
+    private var addedLastFrame:Array = [];
     private var cacheAsBitmapValue:Boolean;
     private var looped:Boolean;
     private var parts:Object = {};
@@ -113,7 +114,20 @@ package com.iopred.garland {
         removeChildAt(0);
       }
       parts = {};
-      activeParts = {};
+    }
+
+    protected function recursivelyGotoAndPlay(container:DisplayObjectContainer,
+                                              frame:int):void {
+      if (container is MovieClip) {
+        MovieClip(container).gotoAndPlay(frame);
+      }
+      for (var i:int = 0, l:int = container.numChildren; i < l; i++) {
+        var child:DisplayObjectContainer =
+            container.getChildAt(i) as DisplayObjectContainer;
+        if (child) {
+          recursivelyGotoAndPlay(child, frame);
+        }
+      }
     }
 
     /**
@@ -146,13 +160,36 @@ package com.iopred.garland {
      *                         but it is suggested to use 'queue'.
      */
     internal function update():void {
+      // Trigger a jump to the current frame, this will correctly add new
+      // parts.
+      if (playing) {
+        gotoAndPlay(currentFrame);
+      } else {
+        gotoAndStop(currentFrame);
+      }
       // If we've hit the end of this animation, let everyone know, and go to
       // the next if we have one queued.
-      if (currentFrame == totalFrames) {
-        looped = true;
-      } else if (currentFrame == 1 && looped) {
+      if (currentFrame == 1 && (looped || totalFrames == 1)) {
         dispatchEvent(new Event(END));
-        animations = animationQueue;
+        // Start the next animation, or in the case of a loop, reget the current
+        // rig, we must do this so that MovieClips that shouldn't exist in
+        // the next frame are correctly removed.
+        if (animationQueue.length) {
+          animations = animationQueue;
+        } else {
+          animation = animation;
+        }
+        looped = false;
+      } else if (currentFrame == totalFrames) {
+        looped = true;
+      }
+      // For parts that were added last frame, we need to kickstart them into
+      // frame 2, or else we get two frames at frame 1.
+      if (addedLastFrame.length) {
+        for each(var container:DisplayObjectContainer in addedLastFrame) {
+          recursivelyGotoAndPlay(container, 2);
+        }
+        addedLastFrame = [];
       }
       // Recreate the rig MovieClip. We do this by stepping through each of
       // it's children, and creating a new part for each, then we position each
@@ -166,10 +203,12 @@ package com.iopred.garland {
         }
         var name:String = Object(child).constructor.toString();
         name = name.substring(7, name.length - 1);
+        // TODO: Make parts always exist again. We must recreate them every time
+        // they are removed from the rig so that all contained animations are
+        // refreshed.
         var part:DisplayObject = parts[name];
         if (!part) {
-          part ||= getPart(name);
-          parts[name] = part;
+          part = getPart(name);
         }
         part.transform = child.transform;
         // We can't wrap an IGarland in a Sprite like we do for the other parts,
@@ -182,16 +221,28 @@ package com.iopred.garland {
         }
         part.transform.matrix3D = null;
         part.filters = child.filters;
-        delete activeParts[name];
         currentParts[name] = part;
-        addChild(part);
+        if (parts[name]) {
+          delete parts[name];
+        } else {
+          addChild(part);
+          if (!(part is Garland)) {
+            addedLastFrame.push(part);
+          }
+        }
       }
       // Remove any unused parts from last frame.
-      for each(var displayObject:DisplayObject in activeParts) {
+      for each(var displayObject:DisplayObject in parts) {
         removeChild(displayObject);
       }
-      activeParts = currentParts;
+      parts = currentParts;
       dispatchEvent(new Event(Event.CHANGE));
+      // We need to kickstart our own rig, just like we do the parts.
+      if (currentFrame == 1) {
+        if (playing) {
+          gotoAndPlay(2)
+        }
+      }
     }
 
     /**
@@ -432,8 +483,6 @@ package com.iopred.garland {
       if (value.length) {
         animation = value.shift();
         animationQueue = value;
-      } else {
-        animation = animation;
       }
     }
 
