@@ -82,6 +82,23 @@ package com.iopred.garland {
     }
 
     /**
+     * Called whenever all items have completed loading.
+     * @dispatches Garland.COMPLETE This event can be used to show the garland
+     *                              when it is 'ready' useful when wanting to
+     *                              show a loading spinner while items load.
+     */
+    private function complete():void {
+      refresh();
+      // We could wait for the update() call if we care about performance above
+      // all else, however updating here allows listeners to get parts and use
+      // the garland without waiting until the next frame.
+      update();
+      if (loaded) {
+        dispatchEvent(new Event(COMPLETE));
+      }
+    }
+
+    /**
      * Fired each frame and updates the rig.
      */
     private function onEnterFrame(event:Event):void {
@@ -92,10 +109,7 @@ package com.iopred.garland {
      * Fired whenever an item completes loading, refreshes the rig.
      */
     private function onComplete(event:Event):void {
-      refresh();
-      if (loaded) {
-        dispatchEvent(new Event(COMPLETE));
-      }
+      complete();
     }
 
     /**
@@ -105,9 +119,7 @@ package com.iopred.garland {
       // Redispatch the error.
       dispatchEvent(event);
       removeItem(IGarland(event.target));
-      if (loaded) {
-        dispatchEvent(new Event(COMPLETE));
-      }
+      complete();
     }
 
     /**
@@ -122,6 +134,9 @@ package com.iopred.garland {
       activeParts = {};
     }
 
+    /**
+     * For the entire display list, go to the specific frame.
+     */
     protected function recursivelyGotoAndPlay(container:DisplayObjectContainer,
                                               frame:int):void {
       if (container is MovieClip) {
@@ -230,6 +245,8 @@ package com.iopred.garland {
           delete activeParts[name];
         } else {
           addChild(part);
+          // Restart the display tree of the part to frame 1, this is
+          // consistant with they way MovieClip works.
           recursivelyGotoAndPlay(DisplayObjectContainer(part), 1);
           if (!(part is Garland)) {
             addedLastFrame.push(part);
@@ -265,9 +282,12 @@ package com.iopred.garland {
     public function addItemAt(item:IGarland, index:int):void {
       index = Math.max(0, Math.min(items.length, index));
       items.splice(index, 0, item);
-      item.addEventListener(COMPLETE, onComplete, false, 0, true);
-      item.addEventListener(ERROR, onError, false, 0, true);
-      refresh();
+      if (!item.loaded) {
+        item.addEventListener(COMPLETE, onComplete, false, 0, true);
+        item.addEventListener(ERROR, onError, false, 0, true);
+      } else if (loaded) {
+        complete();
+      }
     }
 
     /**
@@ -277,6 +297,15 @@ package com.iopred.garland {
      */
     public function addTransform(part:String, transform:Matrix):void {
       transforms[part] = transform;
+    }
+
+    /**
+     * Returns if an item has been added.
+     * @param item The item.
+     * @returns true if the item has been added
+     */
+    public function containsItem(item:IGarland):Boolean {
+      return items.indexOf(item) != -1;
     }
 
     /**
@@ -317,19 +346,22 @@ package com.iopred.garland {
         }
         // If we are rendering as a bitmap, we simply draw our combined parts
         // into a new bitmapData object and position it so it can be transformed
-        // like the original.
+        // like the original. We make the bitmap 2 pixels wider on each side
+        // to prevent strange edge artifacts when displayed on non integer
+        // pixels. Sadly we lose animated parts, but do not lose nested
+        // animations.
         if (cacheAsBitmapValue) {
           var bounds:Rectangle = part.getBounds(part);
-          var bitmapData:BitmapData = new BitmapData(bounds.width + 2,
-              bounds.height + 2, true, 0);
+          var bitmapData:BitmapData = new BitmapData(bounds.width + 4,
+              bounds.height + 4, true, 0);
           var translateMatrix:Matrix = new Matrix();
-          translateMatrix.translate(-bounds.x + 1, -bounds.y + 1);
+          translateMatrix.translate(-bounds.x + 2, -bounds.y + 2);
           bitmapData.draw(part, translateMatrix, null, null, null, true);
           var bitmap:Bitmap = new Bitmap(bitmapData);
           bitmap.smoothing = true;
           bitmap.pixelSnapping = PixelSnapping.NEVER;
-          bitmap.x = bounds.x - 1;
-          bitmap.y = bounds.y - 1;
+          bitmap.x = bounds.x - 2;
+          bitmap.y = bounds.y - 2;
           part = new Sprite();
           part.addChild(bitmap);
         }
@@ -506,6 +538,8 @@ package com.iopred.garland {
       if (value != cacheAsBitmapValue) {
         cacheAsBitmapValue = value;
         clear();
+        refresh();
+        update();
       }
     }
 
