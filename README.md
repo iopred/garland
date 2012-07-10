@@ -3,7 +3,7 @@ Garland
 
 A layered animation library.
 
-Garland is a small library that allows illustrators to do what they do best, make animations and graphics, it provides a simple way to load animations from multiple swfs and to display them with layered graphics.
+Garland is a small library that provides a simple way to load animations from multiple swfs and to display them with layered graphics. Garland is easy to use, and most importantly it makes it easy for Illustrators and Animators to use the Flash IDE to create assets and animations.
 
 Features
 --------
@@ -15,6 +15,7 @@ Features
 - Nested animations.
 - Bitmap caching.
 - Supports most of the MovieClip API.
+- Visit http://iopred.github.com/garland for demos.
 
 Author
 ------
