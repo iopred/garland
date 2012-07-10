@@ -38,6 +38,10 @@
 			animation: "Attack", 
 			toggleBitmapCache: true
 		}, params);
+	    swfobject.embedSWF("swfs/garland.swf", "exampleBigHead", "250", "300", "10.1.0", "swfs/expressInstall.swf", {
+			base: "Armor",
+			toggleBigHead: true
+		}, params);
 	</script>
     <title>Garland by iopred</title>
   </head>
@@ -86,6 +90,9 @@
 
 <p>Colorised items.</p>
 <div id="exampleColorise"></div>
+
+<p>Per part transformations.
+<div id="exampleBigHead"></div>
 
 <p>Bitmap Caching.<br>(note: zoom in, it's hard to notice).</p>
 <div id="exampleBitmapCache"></div>
