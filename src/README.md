@@ -10,22 +10,22 @@ garland.animation = "Idle";
 ```
 
 The loaded SWF file should contain an exported MovieClip named `_Idle`. Inside this MovieClip should be an animation similar to any other MovieClip created in Flash, it can (and should) contain Tweens but also supports color transforms and filters.
-The defining characteristic of an animation is that any MovieClip inside the animation that is exported for runtime can be layered by Garland.
+The defining characteristic of an animation is that all MovieClips inside the animation that should be exported for runtime so they can be layered by Garland.
 Any MovieClips that are not exported for runtime will not be visible.
 
 Let's assume that the `_Idle` animation in the previous SWF contained an exported MovieClip name `Head`.
-If you were now to create a new SWF containing only an exported MovieClip named `Head`, you could layer this on top of your characteranimation simply by adding:
+If you were now to create a new SWF containing only an exported MovieClip named `Head`, you could layer this on top of your character animation simply by adding:
 
 ```
-garland.addItem(new GarlandItem("hat.swf"));
+garland.addItem(new GarlandItem("armor.swf"));
 ```
 
-Now, if you were to create a new SWF file with an exported animation `_Jump`, you could load that animation on to your Garland like any other item. This new animation could contain a new exported MovieClips for new effects (dust clouds or shadows).
+Now, if you were to create a new SWF file with an exported animation `_Attack`, you could load that animation on to your Garland like any other item. This new animation could contain a new exported MovieClips for new effects (sword swoosh, dust clouds or shadows etc.).
 Now you would be able to play this animation with all the layered parts previously added.
 
 ```
-garland.addItem(new GarlandItem("jump.swf"));
-garland.animation = "Jump";
+garland.addItem(new GarlandItem("sword.swf"));
+garland.animation = "Attack";
 ```
 
 Garland supports a host of additional features.
@@ -35,13 +35,13 @@ Garland supports a host of additional features.
   The last animation in the queue will loop indefinately.
 
   ```
-  garland.animations = ["Jump", "Idle"];
+  garland.animations = ["Walk", "Idle"];
   ```
 
   or
 
   ```
-  garland.animation = "Jump";
+  garland.animation = "Walk";
   garland.queue = ["Idle"];
   ```
 
@@ -59,7 +59,7 @@ Garland supports a host of additional features.
   You can then colorise these children with a GarlandLayer.
 
   ```
-  garland.addItem(new GarlandLayer("hat.swf", [0xCC0000]));
+  garland.addItem(new GarlandLayer("armor.swf", [0xCC0000]));
   ```
 
 - Per item transformations.
@@ -76,7 +76,7 @@ Garland supports a host of additional features.
   ```
   var matrix:Matrix = new Matrix();
   matrix.scale(2, 2);
-  var layer:GarlandLayer new GarlandLayer("hat.swf", null, matrix);
+  var layer:GarlandLayer new GarlandLayer("armor.swf", null, matrix);
   layer.addTransform("Head", matrix)
   garland.addItem(layer);
   ```

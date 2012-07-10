@@ -299,6 +299,7 @@ package com.iopred.garland {
      */
     public function addTransform(part:String, transform:Matrix):void {
       transforms[part] = transform;
+      refresh();
     }
 
     /**
@@ -437,6 +438,7 @@ package com.iopred.garland {
      */
     public function removeTransform(part:String):void {
       delete transforms[part];
+      refresh();
     }
 
     /**
