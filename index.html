@@ -25,7 +25,12 @@
 		}, params);
 	    swfobject.embedSWF("swfs/garland.swf", "exampleAnimationItem", "250", "300", "10.1.0", "swfs/expressInstall.swf", {
 			item: "sword",
+			toggleItem: true,
 			animation: "Attack"
+		}, params);
+	    swfobject.embedSWF("swfs/garland.swf", "exampleColorise", "250", "300", "10.1.0", "swfs/expressInstall.swf", {
+			item: "armor",
+			toggleColor: true
 		}, params);
 	</script>
     <title>Garland by iopred</title>
@@ -70,8 +75,11 @@
 <p>Add an item to a character.</p>
 <div id="exampleItem"></div>
 
-<p>Embed animations inside items (note: try playing the animation, then toggle the item and try).</p>
+<p>Embed animations inside items<br/>(note: try playing the animation when the sword isn't active).</p>
 <div id="exampleAnimationItem"></div>
+
+<p>Colorised items</p>
+<div id="exampleColorise"></div>
 
 <h2>Author</h2>
 
