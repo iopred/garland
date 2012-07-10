@@ -16,9 +16,13 @@
 			wmode: "transparent"
 		};
 
-	    swfobject.embedSWF("swfs/garland.swf", "exampleAnimations", "540", "400", "9.0.0", "swfs/expressInstall.swf", {
+	    swfobject.embedSWF("swfs/garland.swf", "exampleAnimations", "250", "300", "10.1.0", "swfs/expressInstall.swf", {
 			rig: "swfs/chubbyRig",
 			toggleAnimation: true
+		}, params);
+	    swfobject.embedSWF("swfs/garland.swf", "exampleItem", "250", "300", "10.1.0", "swfs/expressInstall.swf", {
+			rig: "swfs/chubbyRig",
+			item: "swfs/chubbyArmor"
 		}, params);
 	</script>
     <title>Garland by iopred</title>
@@ -57,8 +61,11 @@
 </ul>
 
 <h2>Examples</h2>
-
+<p>Play an animation.</p>
 <div id="exampleAnimations"></div>
+
+<p>Add an item to a character.</p>
+<div id="exampleItem"></div>
 
 <h2>Author</h2>
 
