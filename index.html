@@ -32,6 +32,11 @@
 			item: "armor",
 			toggleColor: true
 		}, params);
+	    swfobject.embedSWF("swfs/garland.swf", "exampleBitmapCache", "250", "300", "10.1.0", "swfs/expressInstall.swf", {
+			base: "sword",
+			animation: "Attack", 
+			toggleBitmapCache: true
+		}, params);
 	</script>
     <title>Garland by iopred</title>
   </head>
@@ -78,8 +83,11 @@
 <p>Embed animations inside items<br/>(note: try playing the animation when the sword isn't active).</p>
 <div id="exampleAnimationItem"></div>
 
-<p>Colorised items</p>
+<p>Colorised items.</p>
 <div id="exampleColorise"></div>
+
+<p>Bitmap Caching.</p>
+<div id="exampleBitmapCache"></div>
 
 <h2>Author</h2>
 
