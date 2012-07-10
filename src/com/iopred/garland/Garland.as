@@ -241,10 +241,10 @@ package com.iopred.garland {
         part.transform.matrix3D = null;
         part.filters = child.filters;
         currentParts[name] = part;
+        addChild(part);
         if (activeParts[name]) {
           delete activeParts[name];
         } else {
-          addChild(part);
           // Restart the display tree of the part to frame 1, this is
           // consistant with they way MovieClip works.
           recursivelyGotoAndPlay(DisplayObjectContainer(part), 1);
@@ -285,6 +285,8 @@ package com.iopred.garland {
       if (!item.loaded) {
         item.addEventListener(COMPLETE, onComplete, false, 0, true);
         item.addEventListener(ERROR, onError, false, 0, true);
+        // Get a null part, to start loading.
+        item.getPart(null);
       } else if (loaded) {
         complete();
       }

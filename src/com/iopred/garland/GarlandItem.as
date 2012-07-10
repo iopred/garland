@@ -90,12 +90,13 @@ package com.iopred.garland {
      *          the specified part.
      */
     public function getPart(name:String):DisplayObject {
-      load();
       if (domain && domain.hasDefinition(name)) {
         var classReference:Class = domain.getDefinition(name) as Class;
         if (classReference) {
           return new classReference();
         }
+      } else {
+        load();
       }
       return null;
     }
