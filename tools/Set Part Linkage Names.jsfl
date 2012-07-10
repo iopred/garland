@@ -31,7 +31,8 @@ function link(item) {
   if (!touched[name]) {
     touched[name] = true;
     item.linkageExportForAS = true;
-    item.linkageClassName = name;
+    item.linkageExportInFirstFrame = true;
+    item.linkageIdentifier = name;
   }
 }
 

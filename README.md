@@ -25,6 +25,11 @@ Chris Rhodes
 - @iopred
 - http://www.iopred.com
 
+Special thanks to Colter Avara for the Chubby Puppet!
+
+- j.colter.avara _at_ gmail.com
+- http://tumblrdorfscastle.tumblr.com
+
 Licence
 -------
 
