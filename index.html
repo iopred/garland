@@ -17,10 +17,15 @@
 		};
 
 	    swfobject.embedSWF("swfs/garland.swf", "exampleAnimations", "250", "300", "10.1.0", "swfs/expressInstall.swf", {
-			toggleAnimation: true
+			toggleAnimation: true,
+			animation: "Walk"
 		}, params);
 	    swfobject.embedSWF("swfs/garland.swf", "exampleItem", "250", "300", "10.1.0", "swfs/expressInstall.swf", {
 			item: "chubbyArmor"
+		}, params);
+	    swfobject.embedSWF("swfs/garland.swf", "exampleAnimationItem", "250", "300", "10.1.0", "swfs/expressInstall.swf", {
+			item: "chubbySword",
+			animation: "Attack"
 		}, params);
 	</script>
     <title>Garland by iopred</title>
@@ -64,6 +69,9 @@
 
 <p>Add an item to a character.</p>
 <div id="exampleItem"></div>
+
+<p>Embed animations inside items (note: try playing the animation, then toggle the item and try).</p>
+<div id="exampleAnimationItem"></div>
 
 <h2>Author</h2>
 
