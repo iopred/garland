@@ -483,6 +483,7 @@ package com.iopred.garland {
         var temp:IGarland = items[index1];
         items[index1] = items[index2];
         items[index2] = temp;
+        refresh();
       }
     }
 
