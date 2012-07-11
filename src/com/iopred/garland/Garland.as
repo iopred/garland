@@ -41,6 +41,10 @@ package com.iopred.garland {
    *
    * Garland provides a simple way to load animations from multiple swfs,
    * and to display them with layered graphics.
+   *
+   * Garland loads external SWFs, when testing locally you must either compile
+   * with -use-network=false or add an exception in the
+   * Global Security Settings Panel.
    */
   public class Garland extends Sprite implements IGarland {
     private static const GARLAND:String = "_";

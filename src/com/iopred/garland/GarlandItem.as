@@ -29,6 +29,7 @@ package com.iopred.garland {
   import flash.events.Event;
   import flash.events.EventDispatcher;
   import flash.events.IOErrorEvent;
+  import flash.events.SecurityErrorEvent;
   import flash.geom.Matrix;
   import flash.net.URLRequest;
   import flash.system.ApplicationDomain;
@@ -38,6 +39,13 @@ package com.iopred.garland {
    * Multiple GarlandItems can be used together to layer graphics on a rig.
    */
   public class GarlandItem extends EventDispatcher implements IGarland{
+    private static const SECURITY_ERROR:String =
+        "Garland needs a security context to initialise." +
+        "\nIf testing locally, please compile with -use-network=false, " +
+        "or add an exception in the Global Security Settings Panel " +
+        "(http://www.macromedia.com/support/documentation/" +
+        "en/flashplayer/help/settings_manager04.html)"
+
     private var loader:Loader;
     private var domain:ApplicationDomain;
     private var url:String;
@@ -64,6 +72,8 @@ package com.iopred.garland {
       loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onComplete);
       loader.contentLoaderInfo.addEventListener(ErrorEvent.ERROR, onError);
       loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onError);
+      loader.contentLoaderInfo.addEventListener(
+          SecurityErrorEvent.SECURITY_ERROR, onSecurityError);
       loader.load(new URLRequest(url));
     }
 
@@ -82,6 +92,11 @@ package com.iopred.garland {
      */
     private function onError(event:Event):void {
       dispatchEvent(new Event(Garland.ERROR));
+    }
+
+    private function onSecurityError(event:SecurityErrorEvent):void {
+      trace(SECURITY_ERROR);
+      onError(event);
     }
 
     /**
