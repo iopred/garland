@@ -237,7 +237,7 @@ package com.iopred.garland {
         // We can't wrap an IGarland in a Sprite like we do for the other parts,
         // because then we couldn't interact them through getChildByName(),
         // so we must manually concat any transforms each frame.
-        if (part is IGarland && transforms[name]) {
+        if (transforms[name]) {
           var transformMatrix:Matrix = transforms[name].clone();
           transformMatrix.concat(child.transform.matrix);
           part.transform.matrix = transformMatrix;
@@ -303,7 +303,6 @@ package com.iopred.garland {
      */
     public function addTransform(part:String, transform:Matrix):void {
       transforms[part] = transform;
-      refresh();
     }
 
     /**
@@ -342,12 +341,6 @@ package com.iopred.garland {
         for (var i:int = 0, l:int = items.length; i < l; i++) {
           var itemPart:Sprite = items[i].getPart(name);
           if (itemPart) {
-            if (transforms[name]) {
-              var transformMatrix:Matrix = transforms[name].clone();
-              transformMatrix.concat(itemPart.transform.matrix);
-              itemPart.transform.matrix = transformMatrix;
-              itemPart.transform.matrix3D = null;
-            }
             part.addChild(itemPart);
           }
         }
@@ -442,7 +435,6 @@ package com.iopred.garland {
      */
     public function removeTransform(part:String):void {
       delete transforms[part];
-      refresh();
     }
 
     /**
