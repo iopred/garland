@@ -42,6 +42,11 @@
 			base: "Armor",
 			toggleBigHead: true
 		}, params);
+	    swfobject.embedSWF("swfs/garland.swf", "exampleLookAt", "250", "300", "10.1.0", "swfs/expressInstall.swf", {
+			toggleLookAt: true,
+			toggleAnimation: true,
+			animation: "Walk"
+		}, params);
 	</script>
     <title>Garland</title>
   </head>
@@ -93,6 +98,9 @@
 
 <div id="exampleBigHead"></div>
 <p>Per part transformations.
+
+<div id="exampleLookAt"></div>
+<p>Prodedural animation using per part transformations.
 
 <div id="exampleBitmapCache"></div>
 <p>Bitmap Caching.<br>(note: zoom in, it's hard to notice).</p>
