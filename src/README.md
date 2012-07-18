@@ -108,4 +108,4 @@ Garland supports a host of additional features.
 Usage
 -----
 
-Garland loads external SWFs, when testing locally you must either compile with -use-network=false or add an exception in the [Global Security Settings Panel](http://www.macromedia.com/support/documentation/en/flashplayer/help/settings_manager04.html).
+Garland loads external SWFs, when testing locally you must either compile with `-use-network=false` or add an exception in the [Global Security Settings Panel](http://www.macromedia.com/support/documentation/en/flashplayer/help/settings_manager04.html).
